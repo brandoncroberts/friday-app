@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./components/Layout/Layout";
-
+import { BrowserRouter } from "react-router-dom";
 function App() {
   const [makes, setMakes] = useState([]);
 
@@ -18,7 +18,11 @@ function App() {
     }
   };
 
-  return <Layout></Layout>;
+  return (
+    <BrowserRouter>
+      <Layout></Layout>
+    </BrowserRouter>
+  );
 }
 
 export default App;

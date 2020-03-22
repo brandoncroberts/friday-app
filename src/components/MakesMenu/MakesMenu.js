@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 const MakesMenu = ({ makes, history }) => {
-  const [value, setValue] = useState("Choose a make of car");
+  const [value, setValue] = useState("");
 
   const handleChange = event => {
-    console.log("MakesMenu -> event.target.value", event.target.value);
     setValue(event.target.value);
   };
 
@@ -19,8 +18,9 @@ const MakesMenu = ({ makes, history }) => {
         <label>
           Choose a vehicle make
           <select onChange={handleChange} value={value}>
-            {makes.map(make => (
-              <option key={make} value={make}>
+            <option value="Choose a make of car">Choose a make of car</option>
+            {makes.map((make, index) => (
+              <option key={index} value={make}>
                 {make}
               </option>
             ))}

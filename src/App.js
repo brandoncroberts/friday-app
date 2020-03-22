@@ -10,18 +10,17 @@ function App() {
   const [makes, setMakes] = useState([]);
 
   useEffect(() => {
+    const fetchMakes = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/makes");
+        const data = await res.json();
+        setMakes(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchMakes();
   }, []);
-
-  const fetchMakes = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/api/makes");
-      const data = await res.json();
-      setMakes(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <BrowserRouter>

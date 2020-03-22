@@ -33,6 +33,7 @@ const VehicleList = ({ vehicles, loading }) => {
         itemsPerPage={vehiclesPerPage}
         totalItems={vehicles.length}
         paginationHandler={paginationHandler}
+        currentPage={currentPage}
       />
     </div>
   );

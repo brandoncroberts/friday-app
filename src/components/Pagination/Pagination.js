@@ -14,7 +14,6 @@ const Pagination = ({
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
-
       if (currentPage < 5) {
         pageNumbers = pageNumbers.slice(0, 5);
         pageNumbers.push(totalPages);
@@ -37,6 +36,9 @@ const Pagination = ({
       <ul className={paginationStyles.container}>
         {pageNumbers.map((page, index) => (
           <li
+            className={`${paginationStyles.item} ${
+              currentPage === page ? paginationStyles.active : ""
+            }`}
             key={index}
             onClick={() => {
               paginationHandler(page);

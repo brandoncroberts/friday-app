@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+}
+
+.container li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: steelblue;
+  height: 2rem;
+  width: 2rem;
+  border: black solid 1px;
+}
+
+.container li:hover {
+  background-color: #7da7ca;
+  cursor: pointer;
+}

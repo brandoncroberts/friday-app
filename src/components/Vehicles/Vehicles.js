@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import VehicleList from "../VehicleList/VehicleList";
 
-const Vehicles = ({ match, history, makes }) => {
+const Vehicles = ({ match, history, makes, location }) => {
   const [models, setModels] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [modelInputValue, setModelInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (location.search.includes("model")) {
+      setModelInputValue(location.search.split("?model=")[1]);
+    }
     const fetchModels = async () => {
       try {
         const res = await fetch(
@@ -20,7 +23,7 @@ const Vehicles = ({ match, history, makes }) => {
       }
     };
     fetchModels();
-  }, [match.params.make]);
+  }, [match.params.make, location.search]);
 
   useEffect(() => {
     const fetchVehicles = async () => {

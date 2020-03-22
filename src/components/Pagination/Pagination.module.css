@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: steelblue;
+  height: 2rem;
+  width: 2rem;
+  border: black solid 1px;
+}
+
+.item:hover {
+  background-color: #7da7ca;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #315b7d;
+}

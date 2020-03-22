@@ -31,7 +31,10 @@ function App() {
             exact
             render={props => <Main {...props} makes={makes} />}
           />
-          <Route path="/makes/:make" component={Vehicles} />
+          <Route
+            path="/makes/:make"
+            render={props => <Vehicles {...props} makes={makes} />}
+          />
           <Route path="/" component={NotFound} />
         </Switch>
       </Layout>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import VehicleCard from "../VehicleCard/VehicleCard";
+import VehicleList from "../VehicleList/VehicleList";
 
 const Vehicles = ({ match }) => {
   const [models, setModels] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [modelInputValue, setModelInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchModels = async () => {
@@ -24,11 +25,13 @@ const Vehicles = ({ match }) => {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
+        setLoading(true);
         const res = await fetch(
           `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelInputValue}`
         );
         const data = await res.json();
         setVehicles(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -57,16 +60,8 @@ const Vehicles = ({ match }) => {
           </select>
         </label>
       </form>
-      {vehicles.length ? (
-        <div>
-          Vehicles:
-          {vehicles.map((vehicle, index) => (
-            <VehicleCard data={vehicle} key={index} />
-          ))}
-        </div>
-      ) : (
-        ""
-      )}
+
+      <VehicleList vehicles={vehicles} loading={loading} />
     </div>
   );
 };

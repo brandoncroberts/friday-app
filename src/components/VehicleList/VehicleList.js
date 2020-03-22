@@ -4,7 +4,7 @@ import Pagination from "../Pagination/Pagination";
 
 const VehicleList = ({ vehicles, loading }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [vehiclesPerPage, setVehiclesPerPage] = useState(20);
+  const [vehiclesPerPage] = useState(20);
 
   if (loading) {
     return <div>Loading.....</div>;

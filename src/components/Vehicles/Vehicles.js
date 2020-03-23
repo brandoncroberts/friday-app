@@ -9,17 +9,27 @@ const Vehicles = ({ match, history, location }) => {
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      try {
-        setLoading(true);
-        const modelFromParams = location.search.split("?model=")[1];
-        const res = await fetch(
-          `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelFromParams}`
-        );
-        const data = await res.json();
-        setVehicles(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
+      const cachedVehicles = sessionStorage.getItem(
+        `${match.params.make}:${location.search.split("?model=")[1]}`
+      );
+      if (cachedVehicles) setVehicles(JSON.parse(cachedVehicles));
+      else {
+        try {
+          setLoading(true);
+          const modelFromParams = location.search.split("?model=")[1];
+          const res = await fetch(
+            `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelFromParams}`
+          );
+          const data = await res.json();
+          setVehicles(data);
+          setLoading(false);
+          sessionStorage.setItem(
+            `${match.params.make}:${location.search.split("?model=")[1]}`,
+            JSON.stringify(data)
+          );
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
     if (match.params.make && location.search.includes("model")) fetchVehicles();

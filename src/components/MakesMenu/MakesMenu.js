@@ -1,27 +1,52 @@
 import React, { useState, useEffect } from "react";
 import makesMenuStyles from "./MakesMenu.module.css";
+
 const MakesMenu = ({ history, match, location }) => {
-  const [value, setValue] = useState("");
+  const [make, setMake] = useState("");
+  const [makes, setMakes] = useState([]);
   const [model, setModel] = useState("");
   const [models, setModels] = useState([]);
-  const [makes, setMakes] = useState([]);
 
   useEffect(() => {
     const fetchMakes = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/makes");
-        const data = await res.json();
-        setMakes(data);
-      } catch (error) {
-        console.log(error);
+      const cachedMakes = sessionStorage.getItem("makes");
+      if (cachedMakes) setMakes(JSON.parse(cachedMakes));
+      else {
+        try {
+          const res = await fetch("http://localhost:8080/api/makes");
+          const data = await res.json();
+          console.log("fetchMakes -> data", data);
+          setMakes(data);
+          sessionStorage.setItem("makes", JSON.stringify(data));
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
+
     fetchMakes();
   }, []);
 
+  const fetchModels = async make => {
+    const cachedModels = sessionStorage.getItem(`models:${make}`);
+    if (cachedModels) setModels(JSON.parse(cachedModels));
+    else {
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/models?make=${make}`
+        );
+        const data = await res.json();
+        setModels(data);
+        sessionStorage.setItem(`models:${make}`, JSON.stringify(data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
     if (match.params.make) {
-      setValue(match.params.make);
+      setMake(match.params.make);
       fetchModels(match.params.make);
     }
     if (location.search.includes("model")) {
@@ -30,7 +55,7 @@ const MakesMenu = ({ history, match, location }) => {
   }, [location.search, match.params.make]);
 
   const handleMakeChange = event => {
-    setValue(event.target.value);
+    setMake(event.target.value);
     setModels([]);
     fetchModels(event.target.value);
   };
@@ -42,27 +67,17 @@ const MakesMenu = ({ history, match, location }) => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (value && model) {
-      history.push(`/makes/${value}?model=${model}`);
-    } else if (value) {
-      history.push(`/makes/${value}`);
-    }
-  };
-
-  const fetchModels = async make => {
-    try {
-      const res = await fetch(`http://localhost:8080/api/models?make=${make}`);
-      const data = await res.json();
-      setModels(data);
-    } catch (error) {
-      console.log(error);
+    if (make && model) {
+      history.push(`/makes/${make}?model=${model}`);
+    } else if (make) {
+      history.push(`/makes/${make}`);
     }
   };
 
   return (
     <div className={makesMenuStyles.container}>
       <form className={makesMenuStyles.form} onSubmit={handleSubmit}>
-        <select onChange={handleMakeChange} value={value}>
+        <select onChange={handleMakeChange} value={make}>
           <option value="">Choose a make of car</option>
           {makes.map((make, index) => (
             <option key={index} value={make}>
@@ -74,7 +89,7 @@ const MakesMenu = ({ history, match, location }) => {
         <select
           onChange={handleModelChange}
           value={model}
-          disabled={value ? false : true}
+          disabled={make ? false : true}
         >
           <option value={""}>{"Select a model"}</option>
           {models.map(model => (
@@ -87,7 +102,7 @@ const MakesMenu = ({ history, match, location }) => {
           className={makesMenuStyles.submit}
           type="submit"
           value="Search"
-          disabled={value && model ? false : true}
+          disabled={make && model ? false : true}
         />
       </form>
     </div>

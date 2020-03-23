@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import Pagination from "../Pagination/Pagination";
 
+import vehicleListStyles from "./VehicleList.module.css";
+
 const VehicleList = ({ vehicles, loading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [vehiclesPerPage] = useState(20);
@@ -17,16 +19,13 @@ const VehicleList = ({ vehicles, loading }) => {
   const paginationHandler = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <div>
-      {vehicles.length ? (
-        <div>
-          Vehicles:
+    <div className={vehicleListStyles.container}>
+      {vehicles.length && (
+        <section>
           {currentVehicles.map((vehicle, index) => (
             <VehicleCard data={vehicle} key={index} />
           ))}
-        </div>
-      ) : (
-        ""
+        </section>
       )}
 
       <Pagination

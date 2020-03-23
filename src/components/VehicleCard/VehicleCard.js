@@ -1,20 +1,37 @@
 import React from "react";
+import vehicleCardStyles from "./VehicleCard.module.css";
 
 const VehicleCard = ({ data }) => {
-  return (
-    <div>
-      <h1>
-        {data.make} {data.model}
-      </h1>
-      <div>
-        Power:
-        <p>{data.enginePowerPS}</p>
-        <p>{data.enginePowerKW}</p>
-      </div>
+  const vehicleImages = require("../../assets/vehicle-images.json");
+  const image = vehicleImages[`${data.make}:${data.model}`]
+    ? vehicleImages[`${data.make}:${data.model}`]
+    : vehicleImages.fallback;
 
-      <p>Fuel Type: {data.fuelType}</p>
-      <p>Body: {data.bodyType}</p>
-      <p>Engine Capacity: {data.engineCapacity}</p>
+  return (
+    <div className={vehicleCardStyles.container}>
+      <img src={image} alt="vehicle" className={vehicleCardStyles.image} />
+      <section>
+        <h4>
+          {data.make} {data.model}
+        </h4>
+        <div className={vehicleCardStyles.stats}>
+          <p>
+            <b>Engine Power PS:</b> {data.enginePowerPS}
+          </p>
+          <p>
+            <b>Engine Power KW:</b> {data.enginePowerKW}
+          </p>
+          <p>
+            <b>Fuel Type:</b> {data.fuelType}
+          </p>
+          <p>
+            <b>Body:</b> {data.bodyType}
+          </p>
+          <p>
+            <b>Engine Capacity:</b> {data.engineCapacity}
+          </p>
+        </div>
+      </section>
     </div>
   );
 };

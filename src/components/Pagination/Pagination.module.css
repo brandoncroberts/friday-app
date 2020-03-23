@@ -8,17 +8,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: steelblue;
+  background: #5ddb70;
+
   height: 2rem;
   width: 2rem;
   border: black solid 1px;
 }
 
 .item:hover {
-  background-color: #7da7ca;
+  background: #7de38d;
+
   cursor: pointer;
 }
 
 .active {
-  background-color: #315b7d;
+  background: #4cbe5d;
 }

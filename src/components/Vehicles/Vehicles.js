@@ -47,15 +47,25 @@ const Vehicles = ({ match, history, location }) => {
         <h2>New {match.params.make} Vehicles for Sale</h2>
       </section>
       <MakesMenu history={history} location={location} match={match} />
-      {error && (
-        <ErrorMessage
-          message={
-            "The request to our server for this vehicle data was unsuccessful. Please try again."
-          }
-          red
-        />
-      )}
-      <VehicleList vehicles={vehicles} loading={loading} />
+
+      <section className={vehicleStyles.error}>
+        {error && (
+          <ErrorMessage
+            message={
+              "The request to our server for this vehicle data was unsuccessful. Please try again."
+            }
+            red
+          />
+        )}
+      </section>
+      <VehicleList
+        vehicles={vehicles}
+        loading={loading}
+        vehicle={{
+          make: match.params.make,
+          model: location.search.split("?model=")[1]
+        }}
+      />
     </div>
   );
 };

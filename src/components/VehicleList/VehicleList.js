@@ -4,7 +4,7 @@ import Pagination from "../Pagination/Pagination";
 
 import vehicleListStyles from "./VehicleList.module.css";
 
-const VehicleList = ({ vehicles, loading }) => {
+const VehicleList = ({ vehicles, loading, vehicle }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [vehiclesPerPage] = useState(20);
 
@@ -22,10 +22,14 @@ const VehicleList = ({ vehicles, loading }) => {
     <div className={vehicleListStyles.container}>
       {vehicles.length === 0 ? (
         <section className={vehicleListStyles.message}>
-          No vehicles found
+          No vehicles found for {vehicle.make} {vehicle.model}
         </section>
       ) : (
         <section>
+          <h2>
+            Displaying {vehicles.length} results for {vehicle.make}{" "}
+            {vehicle.model}
+          </h2>
           {currentVehicles.map((vehicle, index) => (
             <VehicleCard data={vehicle} key={index} />
           ))}

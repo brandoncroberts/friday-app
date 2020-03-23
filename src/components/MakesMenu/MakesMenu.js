@@ -12,6 +12,16 @@ const MakesMenu = ({ history, match, location }) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    if (match.params.make) {
+      setMake(match.params.make);
+      fetchModels(match.params.make);
+    }
+    if (location.search.includes("model")) {
+      setModel(location.search.split("?model=")[1]);
+    }
+  }, [location.search, match.params.make]);
+
+  useEffect(() => {
     const fetchMakes = async () => {
       const cachedMakes = sessionStorage.getItem("makes");
       if (cachedMakes) setMakes(JSON.parse(cachedMakes));
@@ -29,16 +39,6 @@ const MakesMenu = ({ history, match, location }) => {
 
     fetchMakes();
   }, []);
-
-  useEffect(() => {
-    if (match.params.make) {
-      setMake(match.params.make);
-      fetchModels(match.params.make);
-    }
-    if (location.search.includes("model")) {
-      setModel(location.search.split("?model=")[1]);
-    }
-  }, [location.search, match.params.make]);
 
   const fetchModels = async make => {
     const cachedModels = sessionStorage.getItem(`models:${make}`);
@@ -61,6 +61,7 @@ const MakesMenu = ({ history, match, location }) => {
   };
 
   const handleMakeChange = event => {
+    setError(false);
     setNoInventory(false);
     setMake(event.target.value);
     setModels([]);

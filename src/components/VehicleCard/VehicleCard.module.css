@@ -43,16 +43,16 @@
 @media (min-width: 640px) {
   .container {
     max-width: 80%;
-    flex-direction: row;
-  }
-  .image {
-    width: 50%;
   }
 }
 
 @media (min-width: 768px) {
   .container {
     max-width: 70%;
+    flex-direction: row;
+  }
+  .image {
+    width: 50%;
   }
 }
 

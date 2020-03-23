@@ -20,7 +20,11 @@ const VehicleList = ({ vehicles, loading }) => {
 
   return (
     <div className={vehicleListStyles.container}>
-      {vehicles.length && (
+      {vehicles.length === 0 ? (
+        <section className={vehicleListStyles.message}>
+          No vehicles found
+        </section>
+      ) : (
         <section>
           {currentVehicles.map((vehicle, index) => (
             <VehicleCard data={vehicle} key={index} />

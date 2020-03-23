@@ -43,7 +43,9 @@ const Vehicles = ({ match, history, location }) => {
 
   return (
     <div className={vehicleStyles.container}>
-      <div>New {match.params.make} Vehicles for Sale</div>
+      <section className={vehicleStyles.header}>
+        <h2>New {match.params.make} Vehicles for Sale</h2>
+      </section>
       <MakesMenu history={history} location={location} match={match} />
       {error && (
         <ErrorMessage

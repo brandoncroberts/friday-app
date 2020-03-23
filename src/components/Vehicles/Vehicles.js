@@ -58,14 +58,16 @@ const Vehicles = ({ match, history, location }) => {
           />
         )}
       </section>
-      <VehicleList
-        vehicles={vehicles}
-        loading={loading}
-        vehicle={{
-          make: match.params.make,
-          model: location.search.split("?model=")[1]
-        }}
-      />
+      {location.search.includes("model") && (
+        <VehicleList
+          vehicles={vehicles}
+          loading={loading}
+          vehicle={{
+            make: match.params.make,
+            model: location.search.split("?model=")[1]
+          }}
+        />
+      )}
     </div>
   );
 };

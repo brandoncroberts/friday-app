@@ -64,6 +64,7 @@ const MakesMenu = ({ history, match, location }) => {
     setError(false);
     setNoInventory(false);
     setMake(event.target.value);
+    setModel("");
     setModels([]);
     fetchModels(event.target.value);
   };

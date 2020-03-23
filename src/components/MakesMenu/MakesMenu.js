@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import makesMenuStyles from "./MakesMenu.module.css";
-const MakesMenu = ({ makes, history }) => {
+const MakesMenu = ({ makes, history, match, location }) => {
   const [value, setValue] = useState("");
   const [model, setModel] = useState("");
   const [models, setModels] = useState([]);
+
+  useEffect(() => {
+    if (match.params.make) {
+      setValue(match.params.make);
+      fetchModels(match.params.make);
+    }
+    if (location.search.includes("model")) {
+      setModel(location.search.split("?model=")[1]);
+    }
+  }, [location.search, match.params.make]);
 
   const handleChange = event => {
     setValue(event.target.value);

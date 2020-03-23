@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import VehicleList from "../VehicleList/VehicleList";
 
+import MakesMenu from "../MakesMenu/MakesMenu";
+
 const Vehicles = ({ match, history, makes, location }) => {
   const [models, setModels] = useState([]);
   const [vehicles, setVehicles] = useState([]);
@@ -55,32 +57,13 @@ const Vehicles = ({ match, history, makes, location }) => {
   return (
     <div>
       <div>New {match.params.make} Vehicles for Sale</div>
-      <form>
-        <label>
-          Make:
-          <select onChange={handleMakeChange} value={match.params.make}>
-            <option value={match.params.make}>{match.params.make}</option>
-            {makes.map((make, index) => (
-              <option key={index} value={make}>
-                {make}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Choose a vehicle model
-          <select onChange={handleModelChange} value={modelInputValue}>
-            <option value={"Select a model"}>{"Select a model"}</option>
 
-            {models.map(model => (
-              <option key={model} value={model}>
-                {model}
-              </option>
-            ))}
-          </select>
-        </label>
-      </form>
-
+      <MakesMenu
+        makes={makes}
+        history={history}
+        location={location}
+        match={match}
+      />
       <VehicleList vehicles={vehicles} loading={loading} />
     </div>
   );

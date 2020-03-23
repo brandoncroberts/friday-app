@@ -33,12 +33,22 @@
   outline: none;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+  width: 100%;
+}
+
 @media (min-width: 640px) {
   .form select {
     width: 70%;
   }
 
   .submit {
+    width: 70%;
+  }
+
+  .error {
     width: 70%;
   }
 }
@@ -49,6 +59,10 @@
   }
 
   .submit {
+    width: 50%;
+  }
+
+  .error {
     width: 50%;
   }
 }

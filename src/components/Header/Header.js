@@ -14,10 +14,15 @@ const Header = () => {
       </Link>
       <nav className={headerStyles.nav}>
         <ul className={`${showMenu ? headerStyles.show : ""}`}>
-          <li className={headerStyles.item}>makes</li>
-          <li className={headerStyles.item}>models</li>
-          <li className={headerStyles.item}>vehicles</li>
-          <li className={headerStyles.item}>compare</li>
+          <Link to="/makes">
+            <li className={headerStyles.item}>makes</li>
+          </Link>
+          <Link to="/makes">
+            <li className={headerStyles.item}>models</li>
+          </Link>
+          <Link to="/">
+            <li className={headerStyles.item}>home</li>
+          </Link>
         </ul>
       </nav>
       <div className={headerStyles.rightMenu}>

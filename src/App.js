@@ -14,6 +14,12 @@ function App() {
           <Route path="/" exact render={props => <Main {...props} />} />
           <Route
             path="/makes/:make"
+            exact
+            render={props => <Vehicles {...props} />}
+          />
+          <Route
+            path="/makes/"
+            exact
             render={props => <Vehicles {...props} />}
           />
           <Route path="/" component={NotFound} />

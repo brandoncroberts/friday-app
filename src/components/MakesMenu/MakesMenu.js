@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from "react";
 import makesMenuStyles from "./MakesMenu.module.css";
-const MakesMenu = ({ makes, history, match, location }) => {
+const MakesMenu = ({ history, match, location }) => {
   const [value, setValue] = useState("");
   const [model, setModel] = useState("");
   const [models, setModels] = useState([]);
+  const [makes, setMakes] = useState([]);
+
+  useEffect(() => {
+    const fetchMakes = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/makes");
+        const data = await res.json();
+        setMakes(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMakes();
+  }, []);
 
   useEffect(() => {
     if (match.params.make) {
@@ -15,8 +29,9 @@ const MakesMenu = ({ makes, history, match, location }) => {
     }
   }, [location.search, match.params.make]);
 
-  const handleChange = event => {
+  const handleMakeChange = event => {
     setValue(event.target.value);
+    setModels([]);
     fetchModels(event.target.value);
   };
 
@@ -47,8 +62,8 @@ const MakesMenu = ({ makes, history, match, location }) => {
   return (
     <div className={makesMenuStyles.container}>
       <form className={makesMenuStyles.form} onSubmit={handleSubmit}>
-        <select onChange={handleChange} value={value}>
-          <option value="Choose a make of car">Choose a make of car</option>
+        <select onChange={handleMakeChange} value={value}>
+          <option value="">Choose a make of car</option>
           {makes.map((make, index) => (
             <option key={index} value={make}>
               {make}
@@ -61,7 +76,7 @@ const MakesMenu = ({ makes, history, match, location }) => {
           value={model}
           disabled={value ? false : true}
         >
-          <option value={"Select a model"}>{"Select a model"}</option>
+          <option value={""}>{"Select a model"}</option>
           {models.map(model => (
             <option key={model} value={model}>
               {model}
@@ -72,7 +87,7 @@ const MakesMenu = ({ makes, history, match, location }) => {
           className={makesMenuStyles.submit}
           type="submit"
           value="Search"
-          disabled={value ? false : true}
+          disabled={value && model ? false : true}
         />
       </form>
     </div>

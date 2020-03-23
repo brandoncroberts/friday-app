@@ -6,12 +6,7 @@ const Main = ({ makes, history, location, match }) => {
   return (
     <div className={mainStyles.container}>
       <h2>Search By Make & Model</h2>
-      <MakesMenu
-        makes={makes}
-        history={history}
-        location={location}
-        match={match}
-      />
+      <MakesMenu history={history} location={location} match={match} />
     </div>
   );
 };

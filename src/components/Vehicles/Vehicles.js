@@ -3,36 +3,17 @@ import VehicleList from "../VehicleList/VehicleList";
 
 import MakesMenu from "../MakesMenu/MakesMenu";
 
-const Vehicles = ({ match, history, makes, location }) => {
-  const [models, setModels] = useState([]);
+const Vehicles = ({ match, history, location }) => {
   const [vehicles, setVehicles] = useState([]);
-  const [modelInputValue, setModelInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (location.search.includes("model")) {
-      setModelInputValue(location.search.split("?model=")[1]);
-    }
-    const fetchModels = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:8080/api/models?make=${match.params.make}`
-        );
-        const data = await res.json();
-        setModels(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchModels();
-  }, [match.params.make, location.search]);
 
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
         setLoading(true);
+        const modelFromParams = location.search.split("?model=")[1];
         const res = await fetch(
-          `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelInputValue}`
+          `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelFromParams}`
         );
         const data = await res.json();
         setVehicles(data);
@@ -41,29 +22,13 @@ const Vehicles = ({ match, history, makes, location }) => {
         console.log(error);
       }
     };
-    if (modelInputValue) fetchVehicles();
-  }, [modelInputValue, match.params.make]);
-
-  const handleModelChange = event => {
-    setModelInputValue(event.target.value);
-  };
-
-  const handleMakeChange = event => {
-    setModelInputValue("");
-    setVehicles([]);
-    history.push(`/makes/${event.target.value}`);
-  };
+    if (match.params.make && location.search.includes("model")) fetchVehicles();
+  }, [match.params.make, location.search]);
 
   return (
     <div>
       <div>New {match.params.make} Vehicles for Sale</div>
-
-      <MakesMenu
-        makes={makes}
-        history={history}
-        location={location}
-        match={match}
-      />
+      <MakesMenu history={history} location={location} match={match} />
       <VehicleList vehicles={vehicles} loading={loading} />
     </div>
   );

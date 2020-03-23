@@ -31,6 +31,8 @@ const VehicleCard = ({ data }) => {
             <b>Engine Capacity:</b> {data.engineCapacity}
           </p>
         </div>
+
+        <button className={vehicleCardStyles.button}>Add to Wish List</button>
       </section>
     </div>
   );

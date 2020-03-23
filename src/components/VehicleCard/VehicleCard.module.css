@@ -40,6 +40,24 @@
   margin-bottom: 0.2rem;
 }
 
+.button {
+  font-size: 1rem;
+  width: 70%;
+  margin-top: 2rem;
+  height: 2.5rem;
+  background: #7de38d;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.button:hover {
+  background: #58c969;
+}
+
+.button:focus {
+  outline: none;
+}
+
 @media (min-width: 640px) {
   .container {
     max-width: 80%;

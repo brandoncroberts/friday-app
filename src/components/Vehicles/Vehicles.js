@@ -34,7 +34,7 @@ const Vehicles = ({ match, history, location }) => {
           );
         } catch (error) {
           setError(true);
-          loading(false);
+          setLoading(false);
         }
       }
     };

@@ -8,6 +8,10 @@
   border: solid rgb(235, 228, 228) 1px;
 }
 
+.container section {
+  margin: 0 auto;
+}
+
 .container:hover {
   background: rgb(202, 200, 200);
 }
@@ -26,7 +30,9 @@
 
 .stats {
   display: grid;
+  gap: 0 2rem;
   grid-template-columns: repeat(2, 1fr);
+  width: 100%;
 }
 
 .stats p {
@@ -37,6 +43,7 @@
 @media (min-width: 640px) {
   .container {
     max-width: 80%;
+    flex-direction: row;
   }
 }
 
@@ -44,16 +51,14 @@
   .container {
     max-width: 70%;
   }
+
+  .image {
+    width: 50%;
+  }
 }
 
 @media (min-width: 1024px) {
   .container {
     max-width: 60%;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 50%;
   }
 }

@@ -14,11 +14,10 @@ const Pagination = ({
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
-      if (currentPage < 5) {
+      if (currentPage < 5 && totalPages > 5) {
         pageNumbers = pageNumbers.slice(0, 5);
         pageNumbers.push(totalPages);
-      }
-      if (currentPage > totalPages - 4) {
+      } else if (totalPages > 5 && currentPage > totalPages - 4) {
         pageNumbers = pageNumbers.slice(totalPages - 5, totalPages);
         pageNumbers.unshift(1);
       } else if (currentPage >= 5 && currentPage <= totalPages - 4) {

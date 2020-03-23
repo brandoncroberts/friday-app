@@ -1,87 +1,56 @@
 import React, { useState, useEffect } from "react";
 import VehicleList from "../VehicleList/VehicleList";
 
-const Vehicles = ({ match, history, makes, location }) => {
-  const [models, setModels] = useState([]);
+import MakesMenu from "../MakesMenu/MakesMenu";
+import ErrorMessage from '../ErrorMessage/ErrorMessage'
+
+
+const Vehicles = ({ match, history, location }) => {
   const [vehicles, setVehicles] = useState([]);
-  const [modelInputValue, setModelInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (location.search.includes("model")) {
-      setModelInputValue(location.search.split("?model=")[1]);
-    }
-    const fetchModels = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:8080/api/models?make=${match.params.make}`
-        );
-        const data = await res.json();
-        setModels(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchModels();
-  }, [match.params.make, location.search]);
+    setError(false)
 
-  useEffect(() => {
     const fetchVehicles = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelInputValue}`
-        );
-        const data = await res.json();
-        setVehicles(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
+      const cachedVehicles = sessionStorage.getItem(
+        `${match.params.make}:${location.search.split("?model=")[1]}`
+      );
+      if (cachedVehicles) setVehicles(JSON.parse(cachedVehicles));
+      else {        
+        try {
+          setLoading(true);
+          const modelFromParams = location.search.split("?model=")[1];
+          const res = await fetch(
+            `http://localhost:8080/api/vehicles?make=${match.params.make}&model=${modelFromParams}`
+          );
+          const data = await res.json();
+          setVehicles(data);
+          setLoading(false);
+          sessionStorage.setItem(
+            `${match.params.make}:${location.search.split("?model=")[1]}`,
+            JSON.stringify(data)
+          );
+
+        } catch (error) {
+          setError(true)
+          loading(false)
+        }
       }
     };
-    if (modelInputValue) fetchVehicles();
-  }, [modelInputValue, match.params.make]);
-
-  const handleModelChange = event => {
-    setModelInputValue(event.target.value);
-  };
-
-  const handleMakeChange = event => {
-    setModelInputValue("");
-    setVehicles([]);
-    history.push(`/makes/${event.target.value}`);
-  };
+    if (match.params.make && location.search.includes("model")) fetchVehicles();
+  }, [match.params.make, location.search]);
 
   return (
     <div>
       <div>New {match.params.make} Vehicles for Sale</div>
-      <form>
-        <label>
-          Make:
-          <select onChange={handleMakeChange} value={match.params.make}>
-            <option value={match.params.make}>{match.params.make}</option>
-            {makes.map((make, index) => (
-              <option key={index} value={make}>
-                {make}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Choose a vehicle model
-          <select onChange={handleModelChange} value={modelInputValue}>
-            <option value={"Select a model"}>{"Select a model"}</option>
-
-            {models.map(model => (
-              <option key={model} value={model}>
-                {model}
-              </option>
-            ))}
-          </select>
-        </label>
-      </form>
-
+      <MakesMenu history={history} location={location} match={match} />
+      {
+        error && <ErrorMessage message={"The request to our server for this vehicle data was unsuccessful. Please try again."} red/>
+      }
       <VehicleList vehicles={vehicles} loading={loading} />
+
     </div>
   );
 };

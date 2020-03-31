@@ -16,7 +16,11 @@ const VehicleList = ({ vehicles, loading, vehicle }) => {
   const firstVehicle = lastVehicle - vehiclesPerPage;
   const currentVehicles = vehicles.slice(firstVehicle, lastVehicle);
 
-  const paginationHandler = pageNumber => setCurrentPage(pageNumber);
+  const paginationHandler = pageNumber => {
+    setCurrentPage(pageNumber);
+    // Scroll to the top of the window after going to a new page, for a better UX
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div className={vehicleListStyles.container}>

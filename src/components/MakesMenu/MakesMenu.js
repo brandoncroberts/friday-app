@@ -42,10 +42,12 @@ const MakesMenu = ({ history, match, location }) => {
 
   const fetchModels = async make => {
     const cachedModels = sessionStorage.getItem(`models:${make}`);
-    if (cachedModels && !JSON.parse(cachedModels).length) setNoInventory(true);
 
-    if (cachedModels) setModels(JSON.parse(cachedModels));
-    else {
+    if (cachedModels) {
+      JSON.parse(cachedModels).length
+        ? setModels(JSON.parse(cachedModels))
+        : setNoInventory(true);
+    } else {
       try {
         const res = await fetch(
           `http://localhost:8080/api/models?make=${make}`
